@@ -34,10 +34,134 @@ Repositori Praktikum Jarkom Modul 5
 ![subnetting_07](https://user-images.githubusercontent.com/31863229/144903365-eb8d880b-90bd-49ee-8c64-dac5e445bf93.png)
 
 ## Setting GNS3
+**FOOSHA (sebagai Router)**
+```
+auto eth0
+iface eth0 inet static
+	address 10.151.78.54
+	netmask 255.255.255.252
+	gateway 10.151.78.53
 
+auto eth1
+iface eth1 inet static
+	address 192.181.8.1
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.181.20.1
+	netmask 255.255.255.252
+```
+
+**WATER7 (sebagai Router / DHCP Relay)**
+```
+auto eth0
+iface eth0 inet static
+	address 192.181.8.2
+	netmask 255.255.255.252
+	gateway 192.181.8.1
+
+auto eth1
+iface eth1 inet static
+	address 10.151.79.105
+	netmask 255.255.255.248
+
+auto eth2
+iface eth2 inet static
+	address 192.181.0.1
+	netmask 255.255.255.128
+
+auto eth3
+iface eth3 inet static
+	address 192.181.4.1
+	netmask 255.255.252.0
+```
+
+**GUANHAO (sebagai Router / DHCP Relay)**
+```
+auto eth0
+iface eth0 inet static
+	address 192.181.20.2
+	netmask 255.255.255.252
+	gateway 192.181.20.1
+
+auto eth1
+iface eth1 inet static
+	address 192.181.17.1
+	netmask 255.255.255.248
+
+auto eth2
+iface eth2 inet static
+	address 192.181.18.1
+	netmask 255.255.254.0
+
+auto eth3
+iface eth3 inet static
+	address 192.181.16.1
+	netmask 255.255.255.0
+```
+
+**DORIKI (sebagai DNS Server)**
+```
+auto eth0
+iface eth0 inet static
+	address 10.151.79.106
+	netmask 255.255.255.248
+	gateway 10.151.79.105
+```
+
+**JIPANGU (sebagai DHCP Server)**
+```
+auto eth0
+iface eth0 inet static
+	address 10.151.79.107
+	netmask 255.255.255.248
+	gateway 10.151.79.105
+```
+
+**JORGE (sebagai Web Server)**
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+**MAINGATE (sebagai Web Server)**
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+**BLUENO (sebagai Client)**
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+**CIPHER (sebagai Client)**
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+**ELENA (sebagai Client)**
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+**FUKUROU (sebagai Client)**
+```
+auto eth0
+iface eth0 inet dhcp
+```
 
 ## Routing
-
+**FOOSHA**
+```
+route add -net 10.151.79.104 netmask 255.255.255.248 gw 192.181.8.2
+route add -net 192.181.0.0 netmask 255.255.240.0 gw 192.181.8.2
+route add -net 192.181.16.0 netmask 255.255.248.0 gw 192.181.20.2
+```
 
 ## Setting DHCP Server dan DHCP Relay
 
