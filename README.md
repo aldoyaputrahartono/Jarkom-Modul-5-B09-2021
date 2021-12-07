@@ -310,11 +310,9 @@ iptables -A PREROUTING -t nat -p tcp -d 10.151.79.106 -j DNAT --to-destination 1
 ```
 
 ## Kendala
-
+1. Bingung iptables.
 
 ## Pembagian Tugas
 |Nama                   |Soal       |
 |:---------------------:|:---------:|
 |Aldo Yaputra Hartono   ||
-|||
-|||
