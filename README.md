@@ -6,7 +6,7 @@ Repositori Praktikum Jarkom Modul 5
 |:------------:|:---------------------:|
 |05111940000084|Aldo Yaputra Hartono   |
 |05111940000092|Maximilian H M Lingga  |
-|||
+|05111840000023|Izzulhaq Fawwaz Syauqiy|
 
 ## Topologi
 ![topologi](https://user-images.githubusercontent.com/31863229/144903369-1fe4329a-3fcf-4a49-b655-fff029c30dd6.PNG)
