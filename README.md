@@ -246,40 +246,68 @@ route add -net 192.181.16.0 netmask 255.255.248.0 gw 192.181.20.2
   ```
 
 ## Soal 1
-soal
+Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Foosha menggunakan iptables, tetapi Luffy tidak ingin menggunakan MASQUERADE.
 
 ### Jawaban
-jawab
+**FOOSHA**
+```
+iptables -t nat -A POSTROUTING -s 192.181.0.0/16 -o eth0 -j SNAT --to-source 10.151.79.106
+```
 
 ## Soal 2
-soal
+Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada server yang merupakan DHCP Server dan DNS Server demi menjaga keamanan.
 
 ### Jawaban
-jawab
+**FOOSHA**
+```
+iptables -A FORWARD -p tcp --dport 80 -d 10.151.79.104/29 -i eth0 -j DROP
+```
 
 ## Soal 3
-soal
+Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk membatasi DHCP dan DNS Server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan menggunakan iptables, selebihnya didrop.
 
 ### Jawaban
-jawab
+**JIPANGU**
+```
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
+**DORIKI**
+```
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
 
 ## Soal 4
-soal
+Akses dari subnet Blueno dan Cipher hanya diperbolehkan pada pukul 07.00 - 15.00 pada hari Senin sampai Kamis.
 
 ### Jawaban
-jawab
+**DORIKI**
+```
+iptables -A INPUT -s 192.181.0.0/25 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+iptables -A INPUT -s 192.181.4.0/22 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+iptables -A INPUT -s 192.181.0.0/25 -j REJECT
+iptables -A INPUT -s 192.181.4.0/22 -j REJECT
+```
 
 ## Soal 5
-soal
+Akses dari subnet Elena dan Fukuro hanya diperbolehkan pada pukul 15.01 hingga pukul 06.59 setiap harinya.
 
 ### Jawaban
-jawab
+**DORIKI**
+```
+iptables -A INPUT -s 192.168.18.0/23 -m time --timestart 07:00 --timestop 15:00 -j REJECT
+iptables -A INPUT -s 192.168.16.0/24 -m time --timestart 07:00 --timestop 15:00 -j REJECT
+```
 
 ## Soal 6
-soal
+Karena kita memiliki 2 Web Server, Luffy ingin Guanhao disetting sehingga setiap request dari client yang mengakses DNS Server akan didistribusikan secara bergantian pada Jorge dan Maingate.
 
 ### Jawaban
-jawab
+**FOOSHA**
+```
+iptables -A PREROUTING -t nat -p tcp -d 10.151.79.106 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 192.181.17.2:80
+iptables -A PREROUTING -t nat -p tcp -d 10.151.79.106 -j DNAT --to-destination 192.181.17.3:80
+```
 
 ## Kendala
 
