@@ -34,13 +34,10 @@ Repositori Praktikum Jarkom Modul 5
 ![subnetting_07](https://user-images.githubusercontent.com/31863229/144903365-eb8d880b-90bd-49ee-8c64-dac5e445bf93.png)
 
 ## Setting GNS3
-**FOOSHA (sebagai Router)**
+**FOOSHA (sebagai Router / DHCP Relay)**
 ```
 auto eth0
-iface eth0 inet static
-	address 10.151.78.54
-	netmask 255.255.255.252
-	gateway 10.151.78.53
+iface eth0 inet dhcp
 
 auto eth1
 iface eth1 inet static
@@ -163,8 +160,90 @@ route add -net 192.181.0.0 netmask 255.255.240.0 gw 192.181.8.2
 route add -net 192.181.16.0 netmask 255.255.248.0 gw 192.181.20.2
 ```
 
-## Setting DHCP Server dan DHCP Relay
+## Setting DHCP Relay
+**Pada FOOSHA**
+- Install aplikasi isc-dhcp-relay.
 
+  ```
+  apt-get install isc-dhcp-relay -y
+  ```
+- Edit file `/etc/default/isc-dhcp-relay` seperti pada gambar berikut:
+
+  ![relay_01](https://user-images.githubusercontent.com/31863229/145034296-8deb82f8-7698-4ef4-956a-97ec8adb930e.PNG)
+- Restart isc-dhcp-relay.
+
+  ```
+  service isc-dhcp-relay restart
+  ```
+
+**Pada WATER7**
+- Install aplikasi isc-dhcp-relay.
+
+  ```
+  apt-get install isc-dhcp-relay -y
+  ```
+- Edit file `/etc/default/isc-dhcp-relay` seperti pada gambar berikut:
+
+  ![relay_02](https://user-images.githubusercontent.com/31863229/145034303-0dc3f133-ac63-4fa6-ab7a-b1c4b260ce00.PNG)
+- Restart isc-dhcp-relay.
+
+  ```
+  service isc-dhcp-relay restart
+  ```
+
+**Pada GUANHAO**
+- Install aplikasi isc-dhcp-relay.
+
+  ```
+  apt-get install isc-dhcp-relay -y
+  ```
+- Edit file `/etc/default/isc-dhcp-relay` seperti pada gambar berikut:
+
+  ![relay_03](https://user-images.githubusercontent.com/31863229/145034313-b5c2d391-32aa-4597-9b2a-fe595651b133.PNG)
+- Restart isc-dhcp-relay.
+
+  ```
+  service isc-dhcp-relay restart
+  ```
+
+## Setting DHCP Server
+**Pada JIPANGU**
+- Install aplikasi isc-dhcp-server.
+
+  ```
+  apt-get install isc-dhcp-server -y
+  ```
+- Edit file `/etc/default/isc-dhcp-server` seperti pada gambar berikut:
+
+  ![dhcp_server_01](https://user-images.githubusercontent.com/31863229/145035123-6f90a17b-541a-4bac-bc93-cd7dedfe3d0a.PNG)
+- Edit file `/etc/dhcp/dhcpd.conf` seperti pada gambar berikut:
+
+  ![dhcp_server_02](https://user-images.githubusercontent.com/31863229/145035129-009a4c73-0300-4209-b76b-ac25a07ba039.PNG)
+  ![dhcp_server_03](https://user-images.githubusercontent.com/31863229/145035131-28f9faae-9c49-45ae-95ce-d4e580bdc57c.PNG)
+  ![dhcp_server_04](https://user-images.githubusercontent.com/31863229/145035132-f555225a-92c4-4741-b2b9-f4e062cb049f.PNG)
+  ![dhcp_server_05](https://user-images.githubusercontent.com/31863229/145035134-184949a5-1ffb-4636-9975-c36935272e7f.PNG)
+  ![dhcp_server_06](https://user-images.githubusercontent.com/31863229/145035139-1cb78583-8dc3-4046-9571-4f5b66eb9788.PNG)
+- Restart isc-dhcp-server.
+
+  ```
+  service isc-dhcp-server restart
+  ```
+
+## Setting DNS Server
+**Pada DORIKI**
+- Install aplikasi bind9.
+
+  ```
+  apt-get install bind9 -y
+  ```
+- Edit file `/etc/bind/named.conf.options` seperti pada gambar berikut:
+
+  ![dns_server_01](https://user-images.githubusercontent.com/31863229/145035515-a86870da-9438-4c07-9803-43b147823464.PNG)
+- Restart bind9.
+
+  ```
+  service bind9 restart
+  ```
 
 ## Soal 1
 soal
