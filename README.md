@@ -301,8 +301,14 @@ Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk meng
 ### Jawaban
 **FOOSHA**
 ```
-iptables -t nat -A POSTROUTING -s 192.181.0.0/16 -o eth0 -j SNAT --to-source 10.151.79.106
+iptables -t nat -A POSTROUTING -s 192.181.0.0/16 -o eth0 -j SNAT --to-source (ip eth0)
 ```
+
+Catatan: ip eth0 didapatkan dengan menjalankan command `ip a` pada FOOSHA.
+
+**BLUENO**
+
+![01_01](https://user-images.githubusercontent.com/31863229/145242523-d871015c-1baf-4540-bc80-c768d276b2de.PNG)
 
 ## Soal 2
 Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada server yang merupakan DHCP Server dan DNS Server demi menjaga keamanan.
@@ -310,22 +316,39 @@ Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada ser
 ### Jawaban
 **FOOSHA**
 ```
-iptables -A FORWARD -p tcp --dport 80 -d 10.151.79.104/29 -i eth0 -j DROP
+iptables -A FORWARD -p tcp --dport 80 -d 192.181.0.16/29 -i eth0 -j DROP
 ```
+
+**JIPANGU dan DORIKI**
+
+Install aplikasi netcat: `apt-get install netcat`.
+
+**Testing**
+- Pada JIPANGU dan DORIKI ketikkan: `nc -l -p 80`.
+
+  ![02_01](https://user-images.githubusercontent.com/31863229/145243939-918b8b33-4717-4ba3-a976-995584b359a2.PNG)
+  ![02_02](https://user-images.githubusercontent.com/31863229/145243948-9146729b-07aa-4b0f-aa41-4ab830b8e31e.PNG)
+- Pada FOOSHA ketikkan: `nmap -p 80 192.186.0.18` atau `nmap -p 80 192.186.0.19`.
+
+  ![02_03](https://user-images.githubusercontent.com/31863229/145243954-3ea5d1ba-5771-441d-8788-9bfd1c876d86.PNG)
 
 ## Soal 3
 Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk membatasi DHCP dan DNS Server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan menggunakan iptables, selebihnya didrop.
 
 ### Jawaban
-**JIPANGU**
+**JIPANGU dan DORIKI**
 ```
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
 
-**DORIKI**
-```
-iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
-```
+**Testing**
+
+Lakukan ping ke JIPANGU atau DORIKI dari 4 client secara bersamaan.
+
+![03_01](https://user-images.githubusercontent.com/31863229/145245126-fb53572c-e9f3-4e4d-982a-821711c2c903.PNG)
+![03_02](https://user-images.githubusercontent.com/31863229/145245135-0740d79e-25f5-437a-8e1c-0ee42b396ea1.PNG)
+![03_03](https://user-images.githubusercontent.com/31863229/145245136-d897f736-d8a8-4f14-b362-b4404fe69f88.PNG)
+![03_04](https://user-images.githubusercontent.com/31863229/145245140-fbd83dcc-2bbf-4fdd-9835-1946cd276f88.PNG)
 
 ## Soal 4
 Akses dari subnet Blueno dan Cipher hanya diperbolehkan pada pukul 07.00 - 15.00 pada hari Senin sampai Kamis.
@@ -333,31 +356,60 @@ Akses dari subnet Blueno dan Cipher hanya diperbolehkan pada pukul 07.00 - 15.00
 ### Jawaban
 **DORIKI**
 ```
-iptables -A INPUT -s 192.181.0.0/25 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+iptables -A INPUT -s 192.181.0.128/25 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+iptables -A INPUT -s 192.181.0.128/25 -j REJECT
 iptables -A INPUT -s 192.181.4.0/22 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
-iptables -A INPUT -s 192.181.0.0/25 -j REJECT
 iptables -A INPUT -s 192.181.4.0/22 -j REJECT
 ```
 
+**Testing**
+- Pada BLUENO ubah waktu: `date -s "3 DEC 2021 13:00:00"` dan ping DORIKI.
+
+  ![04_01](https://user-images.githubusercontent.com/31863229/145246447-9e9617c9-28f7-41b7-84f5-8f172c600e7c.PNG)
+- Pada CIPHER ubah waktu: `date -s "8 DEC 2021 13:00:00"` dan ping DORIKI.
+
+  ![04_02](https://user-images.githubusercontent.com/31863229/145246453-3c4f25c2-84b8-491a-b869-a5ebf6c8a520.PNG)
+
 ## Soal 5
-Akses dari subnet Elena dan Fukuro hanya diperbolehkan pada pukul 15.01 hingga pukul 06.59 setiap harinya.
+Akses dari subnet Elena dan Fukurou hanya diperbolehkan pada pukul 15.01 hingga pukul 06.59 setiap harinya.
 
 ### Jawaban
 **DORIKI**
 ```
-iptables -A INPUT -s 192.168.18.0/23 -m time --timestart 07:00 --timestop 15:00 -j REJECT
-iptables -A INPUT -s 192.168.16.0/24 -m time --timestart 07:00 --timestop 15:00 -j REJECT
+iptables -A INPUT -s 192.181.2.0/23 -m time --timestart 07:00 --timestop 15:00 -j REJECT
+iptables -A INPUT -s 192.181.1.0/24 -m time --timestart 07:00 --timestop 15:00 -j REJECT
 ```
+
+**Testing**
+- Pada ELENA ubah waktu: `date -s "8 DEC 2021 13:00:00"` dan ping DORIKI.
+
+  ![05_01](https://user-images.githubusercontent.com/31863229/145247020-8efcc71d-faf9-49fb-943b-f94d02458e2d.PNG)
+- Pada FUKUROU ubah waktu: `date -s "8 DEC 2021 18:00:00"` dan ping DORIKI.
+
+  ![05_02](https://user-images.githubusercontent.com/31863229/145247028-60a6827c-89a0-48ce-9486-5306b2408077.PNG)
 
 ## Soal 6
 Karena kita memiliki 2 Web Server, Luffy ingin Guanhao disetting sehingga setiap request dari client yang mengakses DNS Server akan didistribusikan secara bergantian pada Jorge dan Maingate.
 
 ### Jawaban
-**FOOSHA**
+**GUANHAO**
 ```
-iptables -A PREROUTING -t nat -p tcp -d 10.151.79.106 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 192.181.17.2:80
-iptables -A PREROUTING -t nat -p tcp -d 10.151.79.106 -j DNAT --to-destination 192.181.17.3:80
+iptables -t nat -A PREROUTING -p tcp -d 192.181.0.18 --dport 80 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 192.181.0.26:80
+iptables -t nat -A PREROUTING -p tcp -d 192.181.0.18 --dport 80 -j DNAT --to-destination 192.181.0.27:80
+iptables -t nat -A POSTROUTING -p tcp -d 192.181.0.26 --dport 80 -j SNAT --to-source 192.181.0.18:80
+iptables -t nat -A POSTROUTING -p tcp -d 192.181.0.27 --dport 80 -j SNAT --to-source 192.181.0.18:80
 ```
+
+**Testing**
+- Pada JORGE, MAINGATE, ELENA, dan FUKUROU install aplikasi netcat: `apt-get install netcat`.
+- Pada JORGE dan MAINGATE ketikkan: `nc -l -p 80`.
+- Pada ELENA dan FUKUROU ketikkan: `nc 192.181.0.18 80`
+- Ketikkan sembarang kata pada ELENA atau FUKUROU, nanti akan muncul pada JORGE atau MAINGATE.
+
+![06_01](https://user-images.githubusercontent.com/31863229/145251030-7798c56b-8c1b-4ea2-bd53-1f3c4c3e66cc.PNG)
+![06_03](https://user-images.githubusercontent.com/31863229/145251041-512f9e11-9748-4ce5-8821-8981c6b0cb5c.PNG)
+![06_02](https://user-images.githubusercontent.com/31863229/145251038-dce5fc7b-2b45-432a-a622-28b0c7278083.PNG)
+![06_04](https://user-images.githubusercontent.com/31863229/145251045-59df53af-0711-4d4c-8614-d5616ee836dd.PNG)
 
 ## Kendala
 1. Bingung iptables.
