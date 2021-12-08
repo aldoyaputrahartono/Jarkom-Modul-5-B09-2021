@@ -188,7 +188,7 @@ route add -net 192.181.1.0 netmask 255.255.255.0 gw 192.181.0.6
   ```
 - Edit file `/etc/default/isc-dhcp-relay` seperti pada gambar berikut:
 
-  ![relay_01](https://user-images.githubusercontent.com/31863229/145034296-8deb82f8-7698-4ef4-956a-97ec8adb930e.PNG)
+  ![relay_01](https://user-images.githubusercontent.com/31863229/145240564-7f993ffc-4c51-4a90-a4df-67f5b434aa40.PNG)
 - Restart isc-dhcp-relay.
 
   ```
@@ -203,7 +203,7 @@ route add -net 192.181.1.0 netmask 255.255.255.0 gw 192.181.0.6
   ```
 - Edit file `/etc/default/isc-dhcp-relay` seperti pada gambar berikut:
 
-  ![relay_02](https://user-images.githubusercontent.com/31863229/145034303-0dc3f133-ac63-4fa6-ab7a-b1c4b260ce00.PNG)
+  ![relay_02](https://user-images.githubusercontent.com/31863229/145240573-2ad8269a-9304-49eb-b03e-6bd2c9306d84.PNG)
 - Restart isc-dhcp-relay.
 
   ```
@@ -218,7 +218,7 @@ route add -net 192.181.1.0 netmask 255.255.255.0 gw 192.181.0.6
   ```
 - Edit file `/etc/default/isc-dhcp-relay` seperti pada gambar berikut:
 
-  ![relay_03](https://user-images.githubusercontent.com/31863229/145034313-b5c2d391-32aa-4597-9b2a-fe595651b133.PNG)
+  ![relay_03](https://user-images.githubusercontent.com/31863229/145240576-10f85a74-8621-4177-8565-d7fa9c0ebbb8.PNG)
 - Restart isc-dhcp-relay.
 
   ```
@@ -235,13 +235,44 @@ route add -net 192.181.1.0 netmask 255.255.255.0 gw 192.181.0.6
 - Edit file `/etc/default/isc-dhcp-server` seperti pada gambar berikut:
 
   ![dhcp_server_01](https://user-images.githubusercontent.com/31863229/145035123-6f90a17b-541a-4bac-bc93-cd7dedfe3d0a.PNG)
-- Edit file `/etc/dhcp/dhcpd.conf` seperti pada gambar berikut:
+- Edit file `/etc/dhcp/dhcpd.conf` untuk menambahkan subnet sebagai berikut:
 
-  ![dhcp_server_02](https://user-images.githubusercontent.com/31863229/145035129-009a4c73-0300-4209-b76b-ac25a07ba039.PNG)
-  ![dhcp_server_03](https://user-images.githubusercontent.com/31863229/145035131-28f9faae-9c49-45ae-95ce-d4e580bdc57c.PNG)
-  ![dhcp_server_04](https://user-images.githubusercontent.com/31863229/145035132-f555225a-92c4-4741-b2b9-f4e062cb049f.PNG)
-  ![dhcp_server_05](https://user-images.githubusercontent.com/31863229/145035134-184949a5-1ffb-4636-9975-c36935272e7f.PNG)
-  ![dhcp_server_06](https://user-images.githubusercontent.com/31863229/145035139-1cb78583-8dc3-4046-9571-4f5b66eb9788.PNG)
+  ```
+  subnet 192.181.0.16 netmask 255.255.255.248 {
+  }
+  subnet 192.181.0.128 netmask 255.255.255.128 {
+      range 192.181.0.130 192.181.0.254;
+      option routers 192.181.0.129;
+      option broadcast-address 192.181.0.255;
+      option domain-name-servers 192.181.0.18;
+      default-lease-time 600;
+      max-lease-time 7200;
+  }
+  subnet 192.181.4.0 netmask 255.255.252.0 {
+      range 192.181.4.2 192.181.4.254;
+      option routers 192.181.4.1;
+      option broadcast-address 192.181.4.255;
+      option domain-name-servers 192.181.0.18;
+      default-lease-time 600;
+      max-lease-time 7200;
+  }
+  subnet 192.181.2.0 netmask 255.255.254.0 {
+      range 192.181.2.2 192.181.2.254;
+      option routers 192.181.2.1;
+      option broadcast-address 192.181.2.255;
+      option domain-name-servers 192.181.0.18;
+      default-lease-time 600;
+      max-lease-time 7200;
+  }
+  subnet 192.181.1.0 netmask 255.255.255.0 {
+      range 192.181.1.2 192.181.1.254;
+      option routers 192.181.1.1;
+      option broadcast-address 192.181.1.255;
+      option domain-name-servers 192.181.0.18;
+      default-lease-time 600;
+      max-lease-time 7200;
+  }
+  ```
 - Restart isc-dhcp-server.
 
   ```
