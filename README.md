@@ -11,27 +11,37 @@ Repositori Praktikum Jarkom Modul 5
 ## Topologi
 ![topologi](https://user-images.githubusercontent.com/31863229/144903369-1fe4329a-3fcf-4a49-b655-fff029c30dd6.PNG)
 
-## Subnetting (CIDR)
-**Langkah 1**
-![subnetting_01](https://user-images.githubusercontent.com/31863229/144903254-3af2f1e8-08b5-4fb6-b83c-bcf9e8d139ef.png)
+## Subnetting (VLSM)
+**Pembagian Subnet**
+![subnetting_01](https://user-images.githubusercontent.com/31863229/145238777-082de610-fe27-4ad5-aa59-a0c9e2414747.png)
 
-**Langkah 2**
-![subnetting_02](https://user-images.githubusercontent.com/31863229/144903297-f4268c43-8089-4d77-9f0d-735ba4c19678.png)
+**Perhitungan Subnet**
+|Subnet|Jumlah IP|Netmask|
+|------|---------|-------|
+|A1|2|/30|
+|A2|2|/30|
+|A3|201|/24|
+|A4|301|/23|
+|A5|101|/25|
+|A6|701|/22|
+|A7|4|/29|
+|A8|4|/29|
+|**Total**|**1316**|**/21**|
 
-**Langkah 3**
-![subnetting_03](https://user-images.githubusercontent.com/31863229/144903316-ceb0378e-db57-4339-b979-9ffac0af660c.png)
+**VLSM Tree**
+![subnetting_02](https://user-images.githubusercontent.com/31863229/145238792-6e1aba9d-b343-4871-9475-44d379183eb0.png)
 
-**Langkah 4**
-![subnetting_04](https://user-images.githubusercontent.com/31863229/144903322-7ed6a7c0-a29c-4c65-80ab-ecc521718c1c.png)
-
-**Langkah 5**
-![subnetting_05](https://user-images.githubusercontent.com/31863229/144903336-5ac08b4c-b1d9-46de-b957-4ebd6e8d197f.png)
-
-**Hasil subnetting**
-![subnetting_06](https://user-images.githubusercontent.com/31863229/144903344-2e9f3397-994c-49b6-ac5a-278e943d1d6c.png)
-
-**CIDR Tree**
-![subnetting_07](https://user-images.githubusercontent.com/31863229/144903365-eb8d880b-90bd-49ee-8c64-dac5e445bf93.png)
+**Pembagian IP**
+|Subnet|Network ID|Netmask|
+|------|----------|-------|
+|A1|192.181.0.0|255.255.255.252|
+|A2|192.181.0.4|255.255.255.252|
+|A3|192.181.1.0|255.255.255.0|
+|A4|192.181.2.0|255.255.254.0|
+|A5|192.181.0.128|255.255.255.128|
+|A6|192.181.4.0|255.255.252.0|
+|A7|192.181.0.16|255.255.255.248|
+|A8|192.181.0.24|255.255.255.248|
 
 ## Setting GNS3
 **FOOSHA (sebagai Router / DHCP Relay)**
@@ -41,91 +51,97 @@ iface eth0 inet dhcp
 
 auto eth1
 iface eth1 inet static
-	address 192.181.8.1
-	netmask 255.255.255.252
+        address 192.181.0.1
+        netmask 255.255.255.252
 
 auto eth2
 iface eth2 inet static
-	address 192.181.20.1
-	netmask 255.255.255.252
+         address 192.181.0.5
+         netmask 255.255.255.252
 ```
 
 **WATER7 (sebagai Router / DHCP Relay)**
 ```
 auto eth0
 iface eth0 inet static
-	address 192.181.8.2
-	netmask 255.255.255.252
-	gateway 192.181.8.1
+        address 192.181.0.2
+        netmask 255.255.255.252
+        gateway 192.181.0.1
 
 auto eth1
 iface eth1 inet static
-	address 10.151.79.105
-	netmask 255.255.255.248
+        address 192.181.0.17
+        netmask 255.255.255.248
 
 auto eth2
 iface eth2 inet static
-	address 192.181.0.1
-	netmask 255.255.255.128
+         address 192.181.0.129
+         netmask 255.255.255.128
 
 auto eth3
 iface eth3 inet static
-	address 192.181.4.1
-	netmask 255.255.252.0
+         address 192.181.4.1
+         netmask 255.255.252.0
 ```
 
 **GUANHAO (sebagai Router / DHCP Relay)**
 ```
 auto eth0
 iface eth0 inet static
-	address 192.181.20.2
-	netmask 255.255.255.252
-	gateway 192.181.20.1
+          address 192.181.0.6
+          netmask 255.255.255.252
+          gateway 192.181.0.5
 
 auto eth1
 iface eth1 inet static
-	address 192.181.17.1
-	netmask 255.255.255.248
+          address 192.181.0.25
+          netmask 255.255.255.248
 
 auto eth2
 iface eth2 inet static
-	address 192.181.18.1
-	netmask 255.255.254.0
+          address 192.181.2.1
+          netmask 255.255.254.0
 
 auto eth3
 iface eth3 inet static
-	address 192.181.16.1
-	netmask 255.255.255.0
+          address 192.181.1.1
+          netmask 255.255.255.0
 ```
 
 **DORIKI (sebagai DNS Server)**
 ```
 auto eth0
 iface eth0 inet static
-	address 10.151.79.106
-	netmask 255.255.255.248
-	gateway 10.151.79.105
+       address 192.181.0.18
+       netmask 255.255.255.248
+       gateway 192.181.0.17
 ```
 
 **JIPANGU (sebagai DHCP Server)**
 ```
 auto eth0
 iface eth0 inet static
-	address 10.151.79.107
-	netmask 255.255.255.248
-	gateway 10.151.79.105
+       address 192.181.0.19
+       netmask 255.255.255.248
+       gateway 192.181.0.17
 ```
 
 **JORGE (sebagai Web Server)**
 ```
 auto eth0
-iface eth0 inet dhcp
+iface eth0 inet static
+       address 192.181.0.26
+       netmask 255.255.255.248
+       gateway 192.181.0.25
 ```
 
 **MAINGATE (sebagai Web Server)**
 ```
 auto eth0
-iface eth0 inet dhcp
+iface eth0 inet static
+       address 192.181.0.27
+       netmask 255.255.255.248
+       gateway 192.181.0.25
 ```
 
 **BLUENO (sebagai Client)**
@@ -155,9 +171,12 @@ iface eth0 inet dhcp
 ## Routing
 **FOOSHA**
 ```
-route add -net 10.151.79.104 netmask 255.255.255.248 gw 192.181.8.2
-route add -net 192.181.0.0 netmask 255.255.240.0 gw 192.181.8.2
-route add -net 192.181.16.0 netmask 255.255.248.0 gw 192.181.20.2
+route add -net 192.181.0.16 netmask 255.255.255.248 gw 192.181.0.2
+route add -net 192.181.0.128 netmask 255.255.255.128 gw 192.181.0.2
+route add -net 192.181.4.0 netmask 255.255.252.0 gw 192.181.0.2
+route add -net 192.181.0.24 netmask 255.255.255.248 gw 192.181.0.6
+route add -net 192.181.2.0 netmask 255.255.254.0 gw 192.181.0.6
+route add -net 192.181.1.0 netmask 255.255.255.0 gw 192.181.0.6
 ```
 
 ## Setting DHCP Relay
