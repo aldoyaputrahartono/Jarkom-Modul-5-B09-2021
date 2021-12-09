@@ -412,9 +412,10 @@ iptables -t nat -A POSTROUTING -p tcp -d 192.181.0.27 --dport 80 -j SNAT --to-so
 ![06_04](https://user-images.githubusercontent.com/31863229/145251045-59df53af-0711-4d4c-8614-d5616ee836dd.PNG)
 
 ## Kendala
-1. Bingung iptables.
+1. Sedikit bingung untuk testing iptables.
 
 ## Pembagian Tugas
-|Nama                   |Soal       |
-|:---------------------:|:---------:|
-|Aldo Yaputra Hartono   ||
+|Nama                   |Soal     |
+|:---------------------:|:-------:|
+|Maximilian H M Lingga  |Persiapan|
+|Aldo Yaputra Hartono   |1 - 6    |
